@@ -2,9 +2,23 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Config = require('config');
 
+const { profiles } = require('../helpers/shared');
 const User = require('../../models/user');
 
 module.exports = {
+  userById: async (args) => {
+    try {
+      const user = await User.findById(args.userById);
+
+      return {
+        ...user._doc,
+        createdProfiles: profiles.bind(this, user.createdProfiles),
+      };
+    } catch (err) {
+      throw err;
+    }
+  },
+
   signUp: async (args) => {
     const { fullName, email, mobile, country } = args.userInput;
     try {
@@ -16,6 +30,7 @@ module.exports = {
         throw new Error(`email or mobile already exists`);
       }
 
+      // console.log(userFirebse);
       const hashedPassword = await bcrypt.hash(args.userInput.password, 12);
 
       const user = new User({

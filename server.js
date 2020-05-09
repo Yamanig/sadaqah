@@ -10,7 +10,7 @@ const { isAuthenticated } = require('./graphql/helpers/middlewares');
 const app = express();
 
 app.use(bodyParser.json());
-app.use(isAuthenticated);
+//app.use(isAuthenticated);
 app.use(
   '/api',
   graphqlHTTP({

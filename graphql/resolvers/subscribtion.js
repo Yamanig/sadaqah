@@ -4,9 +4,9 @@ const { profileResult, subscribtionResult } = require('../helpers/shared');
 
 module.exports = {
   subscriptions: async (args, req) => {
-    if (!req.isAuth) {
-      throw new Error('Unauthorized access');
-    }
+    // if (!req.isAuth) {
+    //   throw new Error('Unauthorized access');
+    // }
     try {
       const subscribtions = await Subscribtion.find();
       return subscribtions.map((subscribtion) => {
@@ -44,7 +44,7 @@ module.exports = {
         args.subscribtionId
       ).populate('profile');
 
-      const deletedProfile = profileResult(subscribtion.profile);
+      const deletedProfile = ''; // profileResult(subscribtion.profile);
 
       await Subscribtion.deleteOne({ _id: args.subscribtionId });
 

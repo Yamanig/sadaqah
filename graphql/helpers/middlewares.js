@@ -6,26 +6,26 @@ exports.isAuthenticated = (req, res, next) => {
 
   if (!authHeader) {
     req.isAuth = false;
-    next();
+    return next();
   }
 
   const token = authHeader.split(' ')[1];
 
   if (!token || token === '') {
     req.isAuth = false;
-    next();
+    return next();
   }
   let verifiedToken;
   try {
     verifiedToken = jwt.verify(token, Config.get('SECRET_KEY'));
     if (!verifiedToken) {
       req.isAuth = false;
-      next();
+      return next();
     }
 
     req.isAuth = true;
     req.userId = verifiedToken.userId;
-    next();
+    return next();
   } catch (error) {
     req.isAuth = false;
     next();

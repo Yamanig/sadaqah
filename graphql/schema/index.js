@@ -25,21 +25,9 @@ type Profile {
     address: String!
     mobile: String!
     motherName: String!
-    profiler: Profiler!
+    creator: User!
     createdAt: String!
     updatedAt: String!
-}
-
-type Profiler {
-  _id: ID!
-  fullName: String!
-  mobile: String!
-  email: String!
-  password: String
-  role: String!
-  createdProfiles: [Profile!]
-  createdAt: String!
-  updatedAt: String!
 }
 
 type User {
@@ -51,22 +39,15 @@ type User {
   country: String!
   createdAt: String!
   updatedAt: String!
+  createdProfiles: [Profile!]
 }
 
 input ProfileInput {
     fullName: String!
-    dateOfBirth: String!
+    age: String!
     address: String!
     mobile: String!
     motherName: String!
-}
-
-input ProfilerInput {
-  fullName: String!
-  mobile: String!
-  email: String!
-  password: String
-  role: String!
 }
 
 input UserInput {
@@ -85,15 +66,15 @@ type AuthData {
 
 type Query {
     profiles: [Profile!]!
-    profilers: [Profiler!]!
     subscriptions:[Subscribtion!]!
     donations:[Donation!]!
     signIn(email: String, password: String): AuthData!
+    userById(userById: ID!): User!
+    profileById(profileById: ID!): Profile!
 }
 
 type Mutation {
     createProfile(profileInput: ProfileInput) : Profile
-    createProfiler(profilerInput: ProfilerInput) : Profiler
     signUp(userInput: UserInput) : User
     subscribe(profileId: String): Subscribtion
     unsubscribe(subscribtionId: String): Profile

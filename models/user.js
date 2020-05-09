@@ -21,6 +21,12 @@ const userSchema = new Schema(
       required: true,
     },
     country: String,
+    createdProfiles: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Profile',
+      },
+    ],
   },
   { timestamps: true }
 );

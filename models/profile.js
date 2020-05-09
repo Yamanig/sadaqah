@@ -8,8 +8,8 @@ const profileSchema = new Schema(
       type: String,
       required: true,
     },
-    dateOfBirth: {
-      type: Date,
+    age: {
+      type: Number,
       required: true,
     },
     address: {
@@ -34,9 +34,9 @@ const profileSchema = new Schema(
     business_mobile: String,
     dugsi: [{ macalinName: String, contact: String }],
     school: [{ schoolName: String, contanct: String }],
-    profiler: {
+    creator: {
       type: Schema.Types.ObjectId,
-      ref: 'Profiler',
+      ref: 'User',
     },
   },
   { timestamps: true }
