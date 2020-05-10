@@ -4,9 +4,9 @@ const { subscribtionResult, profileResult } = require('../helpers/shared');
 
 module.exports = {
   subscriptions: async (args, req) => {
-    // if (!req.isAuth) {
-    //   throw new Error('Unauthorized access');
-    // }
+    if (!req.isAuth) {
+      throw new Error('Unauthorized access');
+    }
     try {
       const subscribtions = await Subscribtion.find();
       return subscribtions.map((subscribtion) => {
@@ -36,9 +36,9 @@ module.exports = {
     }
   },
   unsubscribe: async (args, req) => {
-    // if (!req.isAuth) {
-    //   throw new Error('Unauthorized access');
-    // }
+    if (!req.isAuth) {
+      throw new Error('Unauthorized access');
+    }
     try {
       const subscribtion = await Subscribtion.findById(
         args.subscribtionId

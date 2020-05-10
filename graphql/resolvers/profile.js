@@ -4,7 +4,10 @@ const User = require('../../models/user');
 const { profileResult } = require('../helpers/shared');
 
 module.exports = {
-  profileById: async (args) => {
+  profileById: async (args, req) => {
+    if (!req.isAuth) {
+      throw new Error('Unauthorized access');
+    }
     try {
       const profile = await Profile.findById(args.profileById);
 
@@ -27,9 +30,9 @@ module.exports = {
     }
   },
   createProfile: async (args, req) => {
-    // if (!req.isAuth) {
-    //   throw new Error('Unauthorized access');
-    // }
+    if (!req.isAuth) {
+      throw new Error('Unauthorized access');
+    }
     const { fullName, address, mobile, motherName, age } = args.profileInput;
 
     const profile = new Profile({
@@ -38,7 +41,7 @@ module.exports = {
       address,
       mobile,
       motherName,
-      creator: '5eb71ee113f5bd4978687e96', //req.userId,
+      creator: req.userId,
     });
 
     try {
@@ -47,7 +50,7 @@ module.exports = {
 
       return profileResult(result);
 
-      const userCreator = await User.findById('5eb71ee113f5bd4978687e96'); //req.userId
+      const userCreator = await User.findById(req.userId); //req.userId
 
       if (!userCreator) {
         throw new Error(`user not found`);
