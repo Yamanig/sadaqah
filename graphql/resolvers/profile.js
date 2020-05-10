@@ -1,34 +1,26 @@
 const Profile = require('../../models/profile');
 const User = require('../../models/user');
 
-const { dateToString, user } = require('../helpers/shared');
+const { profileResult } = require('../helpers/shared');
 
 module.exports = {
   profileById: async (args) => {
     try {
       const profile = await Profile.findById(args.profileById);
-      return {
-        ...profile._doc,
-        creator: user.bind(this, profile.creator),
-      };
+
+      return profileResult(profile);
     } catch (err) {
       throw err;
     }
   },
   profiles: async (args, req) => {
-    // if (!req.isAuth) {
-    //   throw new Error('Unauthorized access');
-    // }
+    if (!req.isAuth) {
+      throw new Error('Unauthorized access');
+    }
     try {
       const profiles = await Profile.find();
       return profiles.map((profile) => {
-        //return profileResult(profile);
-        return {
-          ...profile._doc,
-          createdAt: dateToString(profile.createdAt),
-          updatedAt: dateToString(profile.updatedAt),
-          creator: user.bind(this, profile.creator),
-        };
+        return profileResult(profile);
       });
     } catch (err) {
       throw err;
@@ -53,12 +45,7 @@ module.exports = {
       let createdProfile;
       const result = await profile.save();
 
-      createdProfile = {
-        ...result._doc,
-        createdAt: dateToString(result.createdAt),
-        updatedAt: dateToString(result.updatedAt),
-        creator: user.bind(this, result.creator),
-      }; //profileResult(result);
+      return profileResult(result);
 
       const userCreator = await User.findById('5eb71ee113f5bd4978687e96'); //req.userId
 
